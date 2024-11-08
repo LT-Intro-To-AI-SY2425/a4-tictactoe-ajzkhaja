@@ -11,7 +11,7 @@ In this assignment you will develop a class for managing a game of Tic Tac Toe. 
 Create a class called `TTTBoard` that defines the following functions:
 
 - `__init__(self)`: Initialize a 3x3 tic tac toe board. The board should contain a single attribute, a list called `board`, that initially contains nine `'*'` characters. This list contains the contents of the board. A `'*'` denotes that this position has not yet been claimed by 'X' or 'O'. Again, this is simply a flat list of 9 items, not a list of lists. 
-- `__str__(self)`: Returns a string representation of the board. Instead of just displaying a flat list of the 9 items, we want to display it like a tic tac toe board, with 3 rows of 3 items each. For example, here is what the board would look like after player "X" plays 3 and player "O" plays 6:
+- `__str__(self)`: Returns a string representation of the board. Instead of just displaying a flat list of the 9 items, we want to display it like a tic tac toe board, with 3 rows of 3 items each. For example, here is what the board would look like after player "X" plays 3 and player "O" plays 6:      
 
   ```text
   * * *

@@ -1,59 +1,105 @@
 # NOTE: Until you fill in the TTTBoard class mypy is going to give you multiple errors
 # talking about unimplemented class attributes, don't worry about this as you're working
 
-
 class TTTBoard:
-    """A tic tac toe board
+    """A Tic Tac Toe board representation.
 
     Attributes:
-        board - a list of '*'s, 'X's & 'O's. 'X's represent moves by player 'X', 'O's
-            represent moves by player 'O' and '*'s are spots no one has yet played on
+        board: A list containing '*' for empty spots, 'X' for player X's moves,
+               and 'O' for player O's moves.
     """
+    
+    def __init__(self) -> None:
+        """Initialize a 3x3 tic tac toe board with empty spots."""
+        self.board = ['*'] * 9
 
-    pass
+    def __str__(self) -> str:
+        """Return a string representation of the board."""
+        return f"{self.board[0]} {self.board[1]} {self.board[2]}\n" \
+               f"{self.board[3]} {self.board[4]} {self.board[5]}\n" \
+               f"{self.board[6]} {self.board[7]} {self.board[8]}"
+
+    def make_move(self, player: str, pos: int) -> bool:
+        """Place a move for the specified player at the given position.
+
+        Args:
+            player: Either 'X' or 'O'.
+            pos: An integer position from 0 to 8.
+
+        Returns:
+            True if the move was successful, False otherwise.
+        """
+        if 0 <= pos < 9 and self.board[pos] == '*':
+            self.board[pos] = player
+            return True
+        return False
+
+    def has_won(self, player: str) -> bool:
+        """Check if the specified player has won.
+
+        Args:
+            player: Either 'X' or 'O'.
+
+        Returns:
+            True if the player has won, False otherwise.
+        """
+        winning_combinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  # Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Columns
+            [0, 4, 8], [2, 4, 6]               # Diagonals
+        ]
+        return any(all(self.board[pos] == player for pos in combo) for combo in winning_combinations)
+
+    def game_over(self) -> bool:
+        """Check if the game is over due to a win or a full board.
+
+        Returns:
+            True if the game is over, False otherwise.
+        """
+        return self.has_won("X") or self.has_won("O") or '*' not in self.board
+
+    def clear(self) -> None:
+        """Reset the board for a new game."""
+        self.board = ['*'] * 9
 
 
 def play_tic_tac_toe() -> None:
-    """Uses your class to play TicTacToe"""
-
-    def is_int(maybe_int: str):
-        """Returns True if val is int, False otherwise
+    
+    
+    def is_integer(value: str) -> bool:
+        """Check if a string can be converted to an integer.
 
         Args:
-            maybe_int - string to check if it's an int
+            value: The string to check.
 
         Returns:
-            True if maybe_int is an int, False otherwise
+            True if the string is an integer, False otherwise.
         """
-        try:
-            int(maybe_int)
-            return True
-        except ValueError:
-            return False
+        return value.isdigit()     
 
-    brd = TTTBoard()
+    board = TTTBoard()          
     players = ["X", "O"]
     turn = 0
 
-    while not brd.game_over():
-        print(brd)
-        move: str = input(f"Player {players[turn]} what is your move? ")
+    while not board.game_over():
+        print(board)
+        move_input = input(f"Player {players[turn]}, enter your move (0-8): ")
 
-        if not is_int(move):
-            raise ValueError(
-                f"Given invalid position {move}, position must be integer between 0 and 8 inclusive"
-            )
+        if not is_integer(move_input):
+            raise ValueError(f"Invalid input: {move_input}. Please enter an integer between 0 and 8.")
 
-        if brd.make_move(players[turn], int(move)):
-            turn = not turn
+        move = int(move_input)
 
-    print(f"\nGame over!\n\n{brd}")
-    if brd.has_won(players[0]):
+        if board.make_move(players[turn], move):
+            turn = 1 - turn  # Switch turns
+
+    print(f"\nGame over!\n\n{board}")                 
+    if board.has_won(players[0]):
         print(f"{players[0]} wins!")
-    elif brd.has_won(players[1]):
+    elif board.has_won(players[1]):        
         print(f"{players[1]} wins!")
     else:
-        print(f"Board full, cat's game!")
+        print("It's a draw!")
 
 
 if __name__ == "__main__":
@@ -89,4 +135,4 @@ if __name__ == "__main__":
     print("All tests passed!")
 
     # uncomment to play!
-    # play_tic_tac_toe()
+    play_tic_tac_toe()
